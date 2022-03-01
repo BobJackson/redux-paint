@@ -1,26 +1,85 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, {useRef, useEffect} from 'react';
+import {clearCanvas, setCanvasSize} from "./utils/canvasUtils";
+import {useSelector, useDispatch} from "react-redux";
+import {beginStroke, endStroke, updateStroke} from "./actions";
+import {RootState} from "./utils/types";
+
+
+const WIDTH = 1024
+const HEIGHT = 768
+
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    const canvasRef = useRef<HTMLCanvasElement>(null)
+
+    const getCanvasWithContext = (canvas = canvasRef.current) => {
+        return {canvas, context: canvas?.getContext("2d")}
+    }
+
+    const isDrawing = useSelector<RootState>(
+        (state) => !!state.currentStroke.points.length
+    )
+
+    const dispatch = useDispatch()
+
+    const startDrawing = ({
+                              nativeEvent
+                          }: React.MouseEvent<HTMLCanvasElement>) => {
+        const {offsetX, offsetY} = nativeEvent
+        dispatch(beginStroke(offsetX, offsetY))
+    }
+
+    const draw = ({
+                      nativeEvent
+                  }: React.MouseEvent<HTMLCanvasElement>) => {
+        if (!isDrawing) {
+            return
+        }
+        const {offsetX, offsetY} = nativeEvent
+
+        dispatch(updateStroke(offsetX, offsetY))
+    }
+
+    const endDrawing = () => {
+        if (!isDrawing) {
+            dispatch(endStroke())
+        }
+    }
+
+    useEffect(() => {
+        const {canvas, context} = getCanvasWithContext()
+        if (!canvas || !context) {
+            return
+        }
+
+        setCanvasSize(canvas, WIDTH, HEIGHT)
+
+        context.lineJoin = "round"
+        context.lineCap = "round"
+        context.lineWidth = 5
+        context.strokeStyle = "black"
+
+        clearCanvas(canvas)
+    }, [])
+
+
+    return (
+        <div className="window">
+            <div className="title-bar">
+                <div className="title-bar-text">Redux Paint</div>
+                <div className="title-bar-controls">
+                    <button aria-label="Close"/>
+                </div>
+            </div>
+            <canvas
+                onMouseDown={startDrawing}
+                onMouseUp={endDrawing}
+                onMouseOut={endDrawing}
+                onMouseMove={draw}
+                ref={canvasRef}
+            />
+        </div>
+    );
 }
 
 export default App;
