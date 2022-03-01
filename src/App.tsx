@@ -1,8 +1,8 @@
 import React, {useRef, useEffect} from 'react';
-import {clearCanvas, setCanvasSize} from "./utils/canvasUtils";
 import {useSelector, useDispatch} from "react-redux";
+import {drawStroke, clearCanvas, setCanvasSize} from "./utils/canvasUtils";
 import {beginStroke, endStroke, updateStroke} from "./actions";
-import {RootState} from "./utils/types";
+import {currentStrokeSelector} from "./rootReducer";
 
 
 const WIDTH = 1024
@@ -11,40 +11,22 @@ const HEIGHT = 768
 
 function App() {
     const canvasRef = useRef<HTMLCanvasElement>(null)
-
     const getCanvasWithContext = (canvas = canvasRef.current) => {
         return {canvas, context: canvas?.getContext("2d")}
     }
-
-    const isDrawing = useSelector<RootState>(
-        (state) => !!state.currentStroke.points.length
-    )
-
+    const currentStroke = useSelector(currentStrokeSelector)
+    const isDrawing = !!currentStroke.points.length
     const dispatch = useDispatch()
 
-    const startDrawing = ({
-                              nativeEvent
-                          }: React.MouseEvent<HTMLCanvasElement>) => {
-        const {offsetX, offsetY} = nativeEvent
-        dispatch(beginStroke(offsetX, offsetY))
-    }
-
-    const draw = ({
-                      nativeEvent
-                  }: React.MouseEvent<HTMLCanvasElement>) => {
-        if (!isDrawing) {
+    useEffect(() => {
+        const {context} = getCanvasWithContext()
+        if (!context) {
             return
         }
-        const {offsetX, offsetY} = nativeEvent
-
-        dispatch(updateStroke(offsetX, offsetY))
-    }
-
-    const endDrawing = () => {
-        if (!isDrawing) {
-            dispatch(endStroke())
-        }
-    }
+        requestAnimationFrame(() =>
+            drawStroke(context, currentStroke.points, currentStroke.color)
+        )
+    }, [currentStroke])
 
     useEffect(() => {
         const {canvas, context} = getCanvasWithContext()
@@ -62,6 +44,29 @@ function App() {
         clearCanvas(canvas)
     }, [])
 
+    const startDrawing = ({
+                              nativeEvent
+                          }: React.MouseEvent<HTMLCanvasElement>) => {
+        const {offsetX, offsetY} = nativeEvent
+        dispatch(beginStroke(offsetX, offsetY))
+    }
+
+    const endDrawing = () => {
+        if (isDrawing) {
+            dispatch(endStroke())
+        }
+    }
+
+    const draw = ({
+                      nativeEvent
+                  }: React.MouseEvent<HTMLCanvasElement>) => {
+        if (!isDrawing) {
+            return
+        }
+        const {offsetX, offsetY} = nativeEvent
+
+        dispatch(updateStroke(offsetX, offsetY))
+    }
 
     return (
         <div className="window">
