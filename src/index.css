@@ -31,8 +31,8 @@ canvas {
     width: 24px;
     height: 24px;
     cursor: pointer;
-    box-shadow: inset -1px -1px #fff, inset 1px 1px gray,
-    inset -2px -2px #dfdfdf, inset 2px 2px #0a0a0a;
+  box-shadow: inset -1px -1px #fff, inset 1px 1px grey,
+  inset -2px -2px #dfdfdf, inset 2px 2px #0a0a0a;
 }
 
 .color-panel {

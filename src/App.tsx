@@ -1,11 +1,16 @@
-import React, {useEffect, useRef} from 'react';
-import {useDispatch, useSelector} from "react-redux";
-import {clearCanvas, drawStroke, setCanvasSize} from "./utils/canvasUtils";
-import {beginStroke, endStroke, updateStroke} from "./actions";
-import {currentStrokeSelector, historyIndexSelector, strokesSelector} from "./rootReducer";
-import {ColorPanel} from "./shared/ColorPanel";
-import {EditPanel} from "./shared/EditPanel";
-
+import React, {useRef, useEffect} from "react"
+import {useSelector, useDispatch} from "react-redux"
+import {drawStroke, clearCanvas, setCanvasSize} from "./utils/canvasUtils"
+import {
+    beginStroke,
+    endStroke,
+    updateStroke
+} from "./modules/currentStroke/actions"
+import {strokesSelector} from "./modules/strokes/reducer"
+import {currentStrokeSelector} from "./modules/currentStroke/reducer"
+import {historyIndexSelector} from "./modules/historyIndex/reducer"
+import {EditPanel} from "./shared/EditPanel"
+import {ColorPanel} from "./shared/ColorPanel"
 
 const WIDTH = 1024
 const HEIGHT = 768
@@ -18,9 +23,9 @@ function App() {
     }
     const currentStroke = useSelector(currentStrokeSelector)
     const isDrawing = !!currentStroke.points.length
-    const dispatch = useDispatch()
     const historyIndex = useSelector(historyIndexSelector)
     const strokes = useSelector(strokesSelector)
+    const dispatch = useDispatch()
 
     useEffect(() => {
         const {context} = getCanvasWithContext()
@@ -74,7 +79,7 @@ function App() {
 
     const endDrawing = () => {
         if (isDrawing) {
-            dispatch(endStroke())
+            dispatch(endStroke(historyIndex, currentStroke))
         }
     }
 
@@ -107,7 +112,7 @@ function App() {
                 ref={canvasRef}
             />
         </div>
-    );
+    )
 }
 
-export default App;
+export default App

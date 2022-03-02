@@ -1,5 +1,5 @@
 import {useDispatch} from "react-redux";
-import {setStrokeColor} from "../actions";
+import {setStrokeColor} from "../modules/currentStroke/actions";
 
 const COLORS = [
     "#000000",
@@ -33,7 +33,6 @@ const COLORS = [
 ]
 
 export const ColorPanel = () => {
-
     const dispatch = useDispatch()
 
     const onColorChange = (color: string) => {
