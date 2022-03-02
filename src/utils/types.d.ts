@@ -1,7 +1,6 @@
-export type RootState = {
-    currentStroke: Stroke
-    strokes: Stroke[]
-    historyIndex: number
+export type Point = {
+    x: number
+    y: number
 }
 
 export type Stroke = {
@@ -9,7 +8,8 @@ export type Stroke = {
     color: string
 }
 
-export type Point = {
-    x: number
-    y: number
+export type RootState = {
+    currentStroke: Stroke
+    strokes: Stroke[]
+    historyIndex: number
 }

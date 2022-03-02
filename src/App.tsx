@@ -1,8 +1,8 @@
-import React, {useRef, useEffect} from 'react';
-import {useSelector, useDispatch} from "react-redux";
-import {drawStroke, clearCanvas, setCanvasSize} from "./utils/canvasUtils";
+import React, {useEffect, useRef} from 'react';
+import {useDispatch, useSelector} from "react-redux";
+import {clearCanvas, drawStroke, setCanvasSize} from "./utils/canvasUtils";
 import {beginStroke, endStroke, updateStroke} from "./actions";
-import {currentStrokeSelector} from "./rootReducer";
+import {currentStrokeSelector, historyIndexSelector, strokesSelector} from "./rootReducer";
 import {ColorPanel} from "./shared/ColorPanel";
 import {EditPanel} from "./shared/EditPanel";
 
@@ -19,6 +19,8 @@ function App() {
     const currentStroke = useSelector(currentStrokeSelector)
     const isDrawing = !!currentStroke.points.length
     const dispatch = useDispatch()
+    const historyIndex = useSelector(historyIndexSelector)
+    const strokes = useSelector(strokesSelector)
 
     useEffect(() => {
         const {context} = getCanvasWithContext()
@@ -29,6 +31,23 @@ function App() {
             drawStroke(context, currentStroke.points, currentStroke.color)
         )
     }, [currentStroke])
+
+    useEffect(() => {
+        const {canvas, context} = getCanvasWithContext()
+        if (!context || !canvas) {
+            return
+        }
+        requestAnimationFrame(() => {
+                clearCanvas(canvas)
+                strokes
+                    .slice(0, strokes.length - historyIndex)
+                    .forEach((stroke) => {
+                        drawStroke(context, stroke.points, stroke.color)
+                    })
+
+            }
+        )
+    }, [historyIndex])
 
     useEffect(() => {
         const {canvas, context} = getCanvasWithContext()
