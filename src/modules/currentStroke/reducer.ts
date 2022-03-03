@@ -1,10 +1,10 @@
 import {
     Action,
-    BEGIN_STROKE,
-    END_STROKE,
-    SET_STROKE_COLOR,
-    UPDATE_STROKE
+    updateStroke,
+    beginStroke,
+    setStrokeColor
 } from "./actions";
+import {endStroke} from "../sharedActions";
 import {RootState} from "../../utils/types";
 
 const initialState: RootState["currentStroke"] = {
@@ -17,22 +17,22 @@ export const reducer = (
     action: Action
 ) => {
     switch (action.type) {
-        case BEGIN_STROKE: {
+        case beginStroke.toString(): {
             return {...state, points: [action.payload]}
         }
-        case UPDATE_STROKE: {
+        case updateStroke.toString(): {
             return {
                 ...state,
                 points: [...state.points, action.payload]
             }
         }
-        case SET_STROKE_COLOR: {
+        case setStrokeColor.toString(): {
             return {
                 ...state,
                 color: action.payload
             }
         }
-        case END_STROKE: {
+        case endStroke.toString(): {
             return {
                 ...state,
                 points: []

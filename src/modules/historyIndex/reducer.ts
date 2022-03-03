@@ -1,19 +1,20 @@
 import {RootState} from "../../utils/types";
-import {END_STROKE, HistoryIndexAction, REDO, UNDO} from "./actions";
+import {Action, undo, redo} from "./actions";
+import {endStroke} from "../sharedActions";
 
 
 export const reducer = (
     state: RootState["historyIndex"] = 0,
-    action: HistoryIndexAction
+    action: Action
 ) => {
     switch (action.type) {
-        case END_STROKE: {
+        case endStroke.toString(): {
             return 0
         }
-        case UNDO: {
+        case undo.toString(): {
             return Math.min(state + 1, action.payload)
         }
-        case REDO: {
+        case redo.toString(): {
             return Math.max(state - 1, 0)
         }
         default:
