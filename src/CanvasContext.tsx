@@ -4,7 +4,7 @@ import React, {
     useRef,
     RefObject,
     useContext
-} from "react";
+} from "react"
 
 export const CanvasContext = createContext<RefObject<HTMLCanvasElement>>({} as RefObject<HTMLCanvasElement>)
 

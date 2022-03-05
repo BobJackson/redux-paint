@@ -1,16 +1,15 @@
-import {useDispatch} from "react-redux";
-import {hide} from "./modules/modals/slice";
-import {useState, ChangeEvent} from "react";
-import {getCanvasImage} from "./utils/canvasUtils";
-import {useCanvas} from "./CanvasContext";
-import {getBase64Thumbnail} from "./utils/scaler";
-import {saveProject} from "./modules/strokes/slice";
-
+import {useState, ChangeEvent} from "react"
+import {useDispatch} from "react-redux"
+import {hide} from "./modules/modals/slice"
+import {getCanvasImage} from "./utils/canvasUtils"
+import {useCanvas} from "./CanvasContext"
+import {getBase64Thumbnail} from "./utils/scaler"
+import {saveProject} from "./modules/strokes/slice"
 
 export const ProjectSaveModal = () => {
+    const [projectName, setProjectName] = useState("")
     const dispatch = useDispatch()
     const canvasRef = useCanvas()
-    const [projectName, setProjectName] = useState("")
 
     const onProjectNameChange = (e: ChangeEvent<HTMLInputElement>) => {
         setProjectName(e.target.value)

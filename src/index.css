@@ -20,6 +20,13 @@ canvas {
     margin: 100px 50%;
 }
 
+.edit {
+    position: fixed;
+    bottom: 40px;
+    left: 30%;
+    z-index: 10;
+}
+
 .colors {
     display: flex;
     flex-direction: row;
@@ -35,18 +42,11 @@ canvas {
   inset -2px -2px #dfdfdf, inset 2px 2px #0a0a0a;
 }
 
-.color-panel {
+.colors-panel {
     position: fixed;
     bottom: 40px;
     left: 50%;
     transform: translate3d(-50%, 0, 0);
-    z-index: 10;
-}
-
-.edit {
-    position: fixed;
-    bottom: 40px;
-    left: 30%;
     z-index: 10;
 }
 
@@ -63,4 +63,30 @@ canvas {
     left: 50%;
     transform: translate3d(-50%, -50%, 0);
     z-index: 10;
+}
+
+.projects-container {
+    overflow: auto;
+    max-width: 600px;
+    height: 400px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    padding: 0 10px;
+    width: 600px;
+}
+
+.project-card {
+    width: 100px;
+    height: 100px;
+    margin: 20px;
+    cursor: pointer;
+    text-align: center;
+}
+
+.project-card img {
+    width: 100px;
+    height: 100px;
+    margin-bottom: 10px;
 }

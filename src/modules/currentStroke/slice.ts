@@ -1,6 +1,6 @@
-import {endStroke} from "../sharedActions";
-import {Point, RootState} from "../../utils/types";
-import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {endStroke} from "../sharedActions"
+import {createSlice, PayloadAction} from "@reduxjs/toolkit"
+import {RootState, Point} from "../../utils/types"
 
 const initialState: RootState["currentStroke"] = {
     points: [],
@@ -21,7 +21,7 @@ const slice = createSlice({
             state.color = action.payload
         }
     },
-    extraReducers: builder => {
+    extraReducers: (builder) => {
         builder.addCase(endStroke, (state) => {
             state.points = []
         })

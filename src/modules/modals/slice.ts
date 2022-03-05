@@ -1,5 +1,5 @@
-import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {RootState} from "../../utils/types";
+import {createSlice, PayloadAction} from "@reduxjs/toolkit"
+import {RootState} from "../../utils/types"
 
 export type ModalState = {
     isShown: boolean
@@ -19,7 +19,7 @@ const slice = createSlice({
             state.isShown = true
             state.modalName = action.payload
         },
-        hide: state => {
+        hide: (state) => {
             state.isShown = true
             state.modalName = null
         }

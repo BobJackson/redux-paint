@@ -3,8 +3,8 @@ import ReactDOM from "react-dom"
 import "./index.css"
 import App from "./App"
 import {Provider} from "react-redux"
-import {CanvasProvider} from "./CanvasContext";
 import {store} from "./store"
+import {CanvasProvider} from "./CanvasContext"
 import reportWebVitals from "./reportWebVitals"
 
 ReactDOM.render(

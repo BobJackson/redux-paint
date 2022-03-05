@@ -1,19 +1,19 @@
 import React, {useEffect} from "react"
-import {useCanvas} from "./CanvasContext";
 import {useSelector, useDispatch} from "react-redux"
 import {drawStroke, clearCanvas, setCanvasSize} from "./utils/canvasUtils"
 import {
     beginStroke,
     updateStroke
 } from "./modules/currentStroke/slice"
-import {endStroke} from "./modules/sharedActions";
+import {endStroke} from "./modules/sharedActions"
 import {strokesSelector} from "./modules/strokes/slice"
 import {currentStrokeSelector} from "./modules/currentStroke/slice"
 import {historyIndexSelector} from "./modules/historyIndex/slice"
 import {EditPanel} from "./shared/EditPanel"
 import {ColorPanel} from "./shared/ColorPanel"
-import {FilePanel} from "./shared/FilePanel";
-import {ModalLayer} from "./ModalLayer";
+import {FilePanel} from "./shared/FilePanel"
+import {useCanvas} from "./CanvasContext"
+import {ModalLayer} from "./ModalLayer"
 
 const WIDTH = 1024
 const HEIGHT = 768
@@ -55,7 +55,7 @@ function App() {
 
             }
         )
-    }, [historyIndex])
+    }, [historyIndex, strokes])
 
     useEffect(() => {
         const {canvas, context} = getCanvasWithContext()
