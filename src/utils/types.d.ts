@@ -1,3 +1,5 @@
+import {ModalState} from "../modules/modals/slice";
+
 export type Point = {
     x: number
     y: number
@@ -11,5 +13,6 @@ export type Stroke = {
 export type RootState = {
     currentStroke: Stroke
     strokes: Stroke[]
-    historyIndex: number
+    historyIndex: number,
+    modalVisible: ModalState
 }
